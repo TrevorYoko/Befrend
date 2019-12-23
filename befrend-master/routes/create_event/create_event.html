@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Create Event</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="/stylesheets/create_event.css">
+</head>
+
+<body>
+
+    <div class="header">
+        <button type="button" id="cancel_button" onclick="cancel()">Cancel</button>
+        <h1>Create Event</h1>
+    </div>
+
+    <div class="create_event">
+        <form id="create_event" method="post" action="/post_event">
+            <input name="event_title" type="text" id="event_title" name="event_title" placeholder="Event Title" required></br>
+            <input name="location" type="text" id="location" name="location" placeholder="Location" required> </br>
+            <!--Looks disgusting rn, but makes some stuff easier-->
+            <input name="date" type="date" id="date" name="date" placeholder="MM/DD/YYYY" required></br>
+            <input name="time" type="time" id="time" name="time" placeholder="e.g: 7:30 P.M" required></br>
+            <input name="event_info" type="text" id="event_info" name="event_info" placeholder="More info" required></br>
+            <select name="activity" id="activity_select">
+                <option value="all">Activities</option>
+                <option value="food">Food</option>
+                <option value="cafe">Cafe</option>
+                <option value="bars">Bars</option>
+                <option value="concert">Concert</option>
+                <option value="karaoke">Karaoke</option>
+                <option value="party">Party</option>
+                <option value="sports">Sports</option>
+                <option value="bowling">Bowling</option>
+                <option value="movie">Movie</option>
+            </select>
+            <!--TODO: Figure out how to style the radio buttons-->
+            <input name="price" type="radio" value="Free">Free
+            <input name="price" type="radio" value="$">$
+            <input name="price" type="radio" value="$$">$$
+            <input name="price" type="radio" value="$$$+">$$$+
+            <input type="submit" value="submit">
+        </form>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"
+        integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+    <script src="/javascripts/create_event.js" async defer></script>
+</body>

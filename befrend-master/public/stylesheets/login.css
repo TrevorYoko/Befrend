@@ -1,0 +1,46 @@
+h1 {
+    font-family: 'Rock Salt', cursive;
+    font-weight: 800;
+    font-size: 3em;
+    text-align: center;
+}
+
+form {
+    font-family: 'Roboto', sans-serif;
+    font-size:  1.2em;
+    width: 100%;
+}
+
+input[type=number] {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    margin-top: 3em;
+    box-sizing: border-box;
+}
+input[type=text] {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    margin-top: 3em;
+    box-sizing: border-box;
+}
+
+input[type=submit] {
+    font-size: 0.9em;
+    background-color: #F9CA24;
+    border: none;
+    color: black;
+    padding: 16px 32px;
+    text-decoration: none;
+    margin: 4px 2px;
+    cursor: pointer;
+    box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 25px;
+}
+
+.loginForm {
+    margin: 0 auto;
+    display: block;
+    text-align: center;
+}

@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>More Info</title>
+    <link href="https://fonts.googleapis.com/css?family=Roboto|Rock+Salt&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-size: 2em;
+        }
+        div {
+            padding-top: 3px;
+            padding-left: 7px;
+            background-color: #F9CA24;
+            margin-bottom: 0.7em;
+            box-shadow: 5px 8px;
+        }
+
+        .people {
+            margin-left: 3em;
+            margin-right: 3em;
+        }
+
+        ul {
+            font-family: 'Roboto', sans-serif;
+        }
+        h1 {
+            font-family: 'Roboto', sans-serif;
+        }
+        button {
+            margin-bottom: 0.7em;
+            padding: 8px;
+            border-radius: 10px;
+            border: none;
+            background-color: #E7F3FF;
+            color: #1677F2;
+            font-weight: bold;
+            font-size: 1.1em;
+            /*font-family: 'Roboto', sans-serif;
+            background-color: white;
+            color: black;
+            margin-left: 10px;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+            padding-top: 10px;
+            padding-bottom: 10px;
+            border-radius:2em;
+            box-sizing: border-box;
+            transition: all 0.2s;
+            */
+        }
+    </style>
+</head>
+<body>
+    <button class="cancel" onClick="goBack()">Back</button>
+        <div>
+            <h1>{{rslt.title}}</h1>
+            <h2>{{rslt.activity}}- {{rslt.price}}</h2>
+            <ul>At {{rslt.location}}</ul>
+            <ul>On {{rslt.date}}</ul>
+            <ul>At {{rslt.time}}</ul>
+            <ul>Started by: {{rslt.user.name}}- @{{rslt.user.instagramHandle}}</ul>
+            <ul>{{rslt.numPpl}} there already</ul>
+            {{#if checkIn}}
+            <button id="checkIn" class={{this._id}}>Check In</button>
+            {{else}}
+            <button id="checkOut" class={{this._id}}>Check Out</button>
+            {{/if}}
+        </div>
+
+            {{#each rslt.people}}
+                <div class="people">
+                    <h3>{{this.name}}- @{{this.instagramHandle}}</h3>
+                    <ul>{{this.age}}</ul>
+                    <ul>{{this.bio}}</ul>
+                </div>
+            {{/each}}
+
+        <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+        <script>
+            $("button#checkIn").click(function() {
+                var url = new URL(window.location.href);
+                var aClass = url.searchParams.get("_id");
+
+                if(aClass != "cancel") {
+                    $.post("/maps/checkIn" + encodeURI("?_id=" + aClass) );
+                }
+                    window.location.replace("/maps?back=true");
+            });
+
+            $("button#checkOut").click(function() {
+                var url = new URL(window.location.href);
+                var aClass = url.searchParams.get("_id");
+
+                if(aClass != "cancel") {
+                    $.post("/maps/checkOut" + encodeURI("?_id=" + aClass) );
+                }
+                    window.location.replace("/maps?back=true");
+            });
+
+            function goBack() {
+                    window.location.replace("/maps/nearby");
+            }
+        </script>
+
+</body>
+</html>

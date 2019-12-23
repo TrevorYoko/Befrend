@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Nearby</title>
+    <link href="https://fonts.googleapis.com/css?family=Roboto|Rock+Salt&display=swap" rel="stylesheet">
+    <style>
+        div {
+            padding-top: 3px;
+            padding-left: 7px;
+            background-color: #F9CA24;
+            margin-bottom: 0.7em;
+            box-shadow: 3px 7px;
+
+        }
+        ul {
+            font-family: 'Roboto', sans-serif;
+        }
+        h1 {
+            font-family: 'Roboto', sans-serif;
+        }
+        button {
+            font-family: 'Roboto', sans-serif;
+            background-color: white;
+            color: black;
+            margin-left: 10px;
+            margin-bottom: 10px;
+            font-size: 15px;
+            padding-top: 10px;
+            padding-bottom: 10px;
+            border-radius:2em;
+            box-sizing: border-box;
+            transition: all 0.2s;
+        }
+    </style>
+</head>
+<body>
+    <button class="cancel" onClick="goBack()">Cancel</button>
+    {{#each rslt}}
+        <div>
+            <h1>{{this.title}}</h1>
+            <h2>{{this.activity}}- {{this.price}}</h2>
+            <ul>At {{this.location}}</ul>
+            <ul>On {{this.date}}</ul>
+            <ul>At {{this.time}}</ul>
+            <ul>Started by: {{this.user.name}}- {{this.user.instagramHandle}}</ul>
+            <ul>{{numPpl}} there already</ul>
+            <button class={{this._id}}>MoreInfo</button>
+        </div>
+    {{/each}}
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="/javascripts/nearby.js" async defer></script>
+</body>
+</html>

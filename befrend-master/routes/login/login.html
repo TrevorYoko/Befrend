@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Befrend Login</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://fonts.googleapis.com/css?family=Roboto|Rock+Salt&display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="/stylesheets/login.css">
+</head>
+
+<body>
+    <h1>Befrend</h1>
+    <div class="loginForm">
+        <!--<form id="loginInfo" method="post" action="/submit-login">-->
+        <form name="loginInfoStuff" id="loginInfo" action="/submitLogin" method="post">
+            Name * </br>
+            <input type="text" id="name" name="name" placeholder="Aran Clauson" required></br>
+            Age *</br>
+            <input type="number"  id="age" name="age" placeholder="21" required> </br>
+            Instagram Handle *</br>
+            <input type="text" id="instagramHandle" name="instagramHandle" placeholder="@wwuPlanes" required></br>
+            Bio *</br>
+            <input type="text" id="bio" name="bio" placeholder="I like airplanes and netBSD" required></br>
+            <input name="submitter" type="submit" value="submit">
+        </form>
+
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"
+        integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/2.2.1/js.cookie.js" integrity="sha256-P8jY+MCe6X2cjNSmF4rQvZIanL5VwUUT4MBnOMncjRU=" crossorigin="anonymous"></script>
+    <script src="/javascripts/login.js" async defer></script>
+</body>
+
+</html>

@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Maps</title>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    <link rel="stylesheet" type="text/css" href="/stylesheets/maps.css">
+  </head>
+
+  <body>
+    <div id="map"></div>
+
+    <button type="button" class="nearby_btn" onclick="openNav()"> Explore Nearby </button>
+
+    <div id="myNav" class="overlay">
+        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+        <p>Explore Nearby </p>
+        <div id="filters">
+            <!--TODO: replace placeholder with actual template-->
+            <button type="button" id="create_button" onclick="goTo()">Create Event</button>
+
+            <select id="activity_select" onchange="sortList()">
+                <option value="Activities">Activities</option>
+                <option value="all">all</option>
+                <option value="food">food</option>
+                <option value="cafe">cafe</option>
+                <option value="bars">bars</option>
+                <option value="concert">concert</option>
+                <option value="karaoke">karaoke</option>
+                <option value="party">party</option>
+                <option value="sports">sports</option>
+                <option value="bowling">bowling</option>
+                <option value="movie">movie</option>
+            </select>
+
+            {{#each rslt}}
+                <div class="nearby-template">
+                    <h1>{{this.title}}</h1>
+                    <h2>{{this.activity}}- {{this.price}}</h2>
+                    <ul>At {{this.location}}</ul>
+                    <ul>On {{this.date}}</ul>
+                    <ul>At {{this.time}}</ul>
+                    <ul>Started by: {{this.user.name}}- {{this.user.instagramHandle}}</ul>
+                    <ul>{{numPpl}} there already</ul>
+                    <button class={{this._id}}>More Info</button>
+                </div>
+            {{/each}}
+            <h2>None Left</h2>
+            <!--
+            <input type="checkbox" name="button" onclick="nearby()" id="now" class='chk-btn'>
+            <label for='now'>Now</label>
+            -->
+        </div>
+    </div>
+
+
+
+
+
+    <input id="pac-input" class="controls" type="text" placeholder="Search for Locations" >
+
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script>
+      var url = new URL(window.location.href);
+      var didBack = url.searchParams.get("back");
+      if(didBack == "true")
+        openNav();
+
+      function sortList() {
+        var option = $("#activity_select option:selected").text();
+        console.log(option);
+        window.location.replace("/maps" + encodeURI("?back=true" + "&option=" + option ));
+      }
+
+      $(".nearby-template button").click(function() {
+          var aClass= this.className;
+          if(aClass != "cancel") {
+              //$.post("/maps/checkIn" + encodeURI("?_id=" + aClass) );
+              window.location.replace("/maps/more_info" + encodeURI("?_id=" + aClass));
+          }
+      });
+      
+      var map, infoWindow, geocoder, searchBox;
+      function goTo() {
+          window.location.replace("/create_event");
+      }
+      function nearby() {
+          window.location.replace("/maps/nearby");
+      }
+      function openNav() {
+        document.getElementById("myNav").style.height = "100%";
+      }
+
+      function closeNav() {
+        document.getElementById("myNav").style.height = "0%";
+      }
+
+
+      function initMap() {
+      map = new google.maps.Map(document.getElementById('map'), {
+      center: {lat: -34.397, lng: 150.644},
+      zoom: 15
+      });
+      infoWindow = new google.maps.InfoWindow;
+      
+      fetch('/maps/getEvents')
+      .then((data) => {
+      data.json().then((data) => {
+      for(i = 0; i < data.length; i++){
+		     //console.log(data[i].location);
+		     geo(data[i]);
+		     }
+      })
+      .then((err) => {
+      console.log(err);
+      });
+	});
+
+      //geo("3950 Byron Ave Bellingham WA 98225");
+      //geo("2122 Harris Ave Bellingham WA 98225");
+
+      var create = this;
+
+      <!-- TODO: Search box -->
+      var searchBox = new google.maps.places.SearchBox(document.getElementById('pac-input'));
+      map.controls[google.maps.ControlPosition.TOP_CENTER].push(document.getElementById('pac-input'));
+      google.maps.event.addListener(searchBox, 'places_changed', function() {
+        searchBox.set('map', null);
+
+        var places = searchBox.getPlaces();
+
+        var bounds = new google.maps.LatLngBounds();
+        var i, place;
+        for (i = 0; place = places[i]; i++) {
+          (function(place) {
+            var marker = new google.maps.Marker({
+
+              position: place.geometry.location
+            });
+            marker.bindTo('map', searchBox, 'map');
+            google.maps.event.addListener(marker, 'map_changed', function() {
+              if (!this.getMap()) {
+                this.unbindAll();
+              }
+            });
+            bounds.extend(place.geometry.location);
+          }(place));
+
+        }
+        map.fitBounds(bounds);
+        searchBox.set('map', map);
+        map.setZoom(Math.min(map.getZoom(),12));
+      });
+
+        <!-- Geocoding section -->
+      function geo(addr){
+      geocoder = new google.maps.Geocoder();
+      var address = addr.location;
+      geocoder.geocode( { 'address': address}, function(results, status) {
+      if (status == google.maps.GeocoderStatus.OK) {
+        //console.log(results[0].geometry.location.lat())
+        //console.log(results[0].geometry.location.lng())
+
+	if(addr.numPpl <= 1){
+	var circle1 = new google.maps.Circle({
+        strokeColor: '#FF0000',
+        strokeOpacity: 0.8,
+        strokeWeight: 2,
+        fillColor: '#FF0000',
+        fillOpacity: 0.35,
+        map: map,
+        center: results[0].geometry.location,
+        radius: 40
+			 });
+			 }
+
+	if(addr.numPpl >= 2 && addr.numPpl <= 3){		 
+	var circle2 = new google.maps.Circle({
+        strokeColor: '#0000FF',
+        strokeOpacity: 0.8,
+        strokeWeight: 2,
+        fillColor: '#0000FF',
+        fillOpacity: 0.35,
+        map: map,
+        center: results[0].geometry.location,
+        radius: 70
+					    });
+					    }
+
+	if(addr.numPpl >= 4 && addr.numPpl <= 5){				    
+	var circle3 = new google.maps.Circle({
+        strokeColor: '#00FF00',
+        strokeOpacity: 0.8,
+        strokeWeight: 2,
+        fillColor: '#00FF00',
+        fillOpacity: 0.35,
+        map: map,
+        center: results[0].geometry.location,
+        radius: 100
+					    });
+					    }
+
+	if(addr.numPpl >= 6 && addr.numPpl <= 7){				    
+	var circle4 = new google.maps.Circle({
+        strokeColor: '#9e682e',
+        strokeOpacity: 0.8,
+        strokeWeight: 2,
+        fillColor: '#9e682e',
+        fillOpacity: 0.5,
+        map: map,
+        center: results[0].geometry.location,
+        radius: 130
+	      });
+	      }
+
+	if(addr.numPpl >= 8 && addr.numPpl <= 9){				    
+	var circle4 = new google.maps.Circle({
+        strokeColor: '#FFFF00',
+        strokeOpacity: 0.8,
+        strokeWeight: 2,
+        fillColor: '#FFFF00',
+        fillOpacity: 0.35,
+        map: map,
+        center: results[0].geometry.location,
+        radius: 160
+	      });
+	      }
+
+	if(addr.numPpl >= 10 && addr.numPpl <= 11){				    
+	var circle4 = new google.maps.Circle({
+        strokeColor: '#FF8000',
+        strokeOpacity: 0.8,
+        strokeWeight: 2,
+        fillColor: '#FF8000',
+        fillOpacity: 0.35,
+        map: map,
+        center: results[0].geometry.location,
+        radius: 190
+	      });
+	      }
+
+	if(addr.numPpl >= 12 && addr.numPpl <= 13){				    
+	var circle4 = new google.maps.Circle({
+        strokeColor: '#00FF80',
+        strokeOpacity: 0.8,
+        strokeWeight: 2,
+        fillColor: '#00FF80',
+        fillOpacity: 0.35,
+        map: map,
+        center: results[0].geometry.location,
+        radius: 220
+	      });
+	      }
+					       
+	} else {
+      //alert('Geocode was not successful for the following reason: ' + status);
+      }
+      });
+      }
+
+      //Try HTML5 geolocation.
+      if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(function(position) {
+      var pos = {
+      lat: position.coords.latitude,
+      lng: position.coords.longitude
+      };
+
+      infoWindow.setPosition(pos);
+      infoWindow.setContent('Location found.');
+      infoWindow.open(map);
+      map.setCenter(pos);
+      }, function() {
+      handleLocationError(true, infoWindow, map.getCenter());
+      });
+      } else {
+      <!-- Browser doesnt support Geolocation -->
+      handleLocationError(false, infoWindow, map.getCenter());
+      }
+
+      }
+      google.maps.event.addDomListener(window, 'load', init);
+
+      function handleLocationError(browserHasGeolocation, infoWindow, pos) {
+      infoWindow.setPosition(pos);
+      infoWindow.setContent(browserHasGeolocation ?
+      'Error: The Geolocation service failed.' :
+      'Error: Your browser doesn\'t support geolocation.');
+      infoWindow.open(map);
+      }
+    </script>
+    <script async defer
+	    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBRfWx1Ydur-wgEHCsrykdU-RT6z4m9ydg&libraries=visualization&callback=initMap&libraries=places">
+    </script>
+  </body>
+</html>

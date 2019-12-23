@@ -1,0 +1,100 @@
+/* HEADER */
+body {
+    background-color: #F7F7F7;
+    font-family: sans-serif;
+    margin: 0;
+}
+div.header {
+    background-color: #F7F7F7;
+    margin-top: 0;
+    padding: 20px;
+}
+h1 {
+    text-align: center;
+    width: 100%;
+    margin-top: 0;
+    font-weight: 500;
+    font-size: 20px;
+    padding-top: 10px;
+}
+button {
+    color: #0078FF;
+    font-size: 15px;
+    position: absolute;
+    padding-top: 10px;
+    border: none;
+    background-color: #F7F7F7;
+}
+
+/* INFO INPUT */
+form {
+    margin: 0;
+    width: 100%;
+}
+input[type=text] {
+    width: 100%;
+    padding: 12px 20px;
+    box-sizing: border-box;
+}
+#event_title {
+    font-size: 30px;
+    font-weight: lighter;
+    margin: 10px 0;
+    border-style: none;
+}
+#time {
+    margin-bottom: 10px;
+}
+#event_info {
+    height: 60px;
+    margin-bottom: 10px;
+}
+#activity_select {
+    display: block;
+    font-size: 16px;
+    font-weight: lighter;
+    color: #444;
+    line-height: 1.3;
+    padding: .6em 1.4em .5em .8em;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    margin-bottom: 10px;
+    border: 1px solid #aaa;
+    appearance: none;
+    background-color: #fff;
+}
+input[type=submit] {
+    font-size: 0.9em;
+    background-color: #F9CA24;
+    border: none;
+    color: black;
+    padding: 16px 20px;
+    text-decoration: none;
+    cursor: pointer;
+    width: 100%;
+    box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.25);
+}
+input[type=radio] {
+    height: 20px;
+    width: 40px;
+    margin-bottom: 10px;
+}
+/* PRICE RANGE */
+input[type=button]{
+    float: left;
+    height: 30px;
+    width: 70px;
+    text-align: center;
+    color: black;
+    background-color: white;
+    border-color: black;
+    border-width: 10;
+    margin: 10px;
+    border-radius: 25px;
+}
+input[type=button]:focus {
+    background-color: #F9CA24;
+    border-color: #F9CA24;
+    color: white;
+}
